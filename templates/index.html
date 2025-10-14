@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+{% block title %}Home - ITian Club Aptitude Quiz{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="row align-items-center min-vh-100">
+    <div class="col-lg-6 fade-in-up">
+        <div class="glass-card">
+            <h1 class="display-4 fw-bold mb-4">
+                Welcome to the 
+                <span class="text-gradient">ITian Club</span>
+                <br>Aptitude Quiz Event!
+            </h1>
+            <p class="lead mb-4">
+                Test your skills, challenge your mind, and discover your potential. 
+                Join hundreds of students competing in our comprehensive aptitude assessment.
+            </p>
+            
+            <!-- Features -->
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center">
+                        <div class="feature-icon me-3">
+                            <i class="fas fa-brain text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Mental Agility</h6>
+                            <small class="text-muted">Test your reasoning skills</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center">
+                        <div class="feature-icon me-3">
+                            <i class="fas fa-calculator text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Mathematical Prowess</h6>
+                            <small class="text-muted">Solve complex problems</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center">
+                        <div class="feature-icon me-3">
+                            <i class="fas fa-language text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Verbal Excellence</h6>
+                            <small class="text-muted">Master language skills</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center">
+                        <div class="feature-icon me-3">
+                            <i class="fas fa-trophy text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Win Prizes</h6>
+                            <small class="text-muted">Compete for rewards</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="d-flex flex-column flex-sm-row gap-3">
+                <a href="{{ url_for('google.login') }}" class="btn btn-premium btn-lg">
+                    <i class="fas fa-sign-in-alt me-2"></i>
+                    Start Quiz Now
+                </a>
+                <a href="#about" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6 fade-in">
+        <div class="text-center">
+            <div class="hero-image">
+                <div class="floating-card">
+                    <i class="fas fa-question-circle fa-3x text-primary mb-3"></i>
+                    <h5>Aptitude Test</h5>
+                    <p class="text-muted">Challenge your mind</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About Section -->
+<div id="about" class="row mt-5 pt-5 reveal">
+    <div class="col-12 text-center mb-5">
+        <h2 class="display-5 fw-bold mb-3">Why Take Our Aptitude Test?</h2>
+        <p class="lead">Discover your strengths and areas for improvement</p>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="glass-card text-center h-100">
+            <div class="feature-icon-large mb-3">
+                <i class="fas fa-chart-line fa-2x text-primary"></i>
+            </div>
+            <h4>Performance Analytics</h4>
+            <p>Get detailed insights into your performance across different categories with comprehensive analytics.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="glass-card text-center h-100">
+            <div class="feature-icon-large mb-3">
+                <i class="fas fa-users fa-2x text-primary"></i>
+            </div>
+            <h4>Peer Comparison</h4>
+            <p>See how you rank among your peers and identify areas where you excel or need improvement.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="glass-card text-center h-100">
+            <div class="feature-icon-large mb-3">
+                <i class="fas fa-certificate fa-2x text-primary"></i>
+            </div>
+            <h4>Certification</h4>
+            <p>Earn a certificate of completion and recognition for your participation and performance.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="row mt-5 reveal">
+    <div class="col-12">
+        <div class="glass-card">
+            <div class="row text-center">
+                <div class="col-md-3 mb-3">
+                    <div class="stat-item">
+                        <h3 class="display-6 fw-bold text-primary">500+</h3>
+                        <p class="text-muted">Students Participated</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stat-item">
+                        <h3 class="display-6 fw-bold text-primary">95%</h3>
+                        <p class="text-muted">Success Rate</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stat-item">
+                        <h3 class="display-6 fw-bold text-primary">3</h3>
+                        <p class="text-muted">Test Categories</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stat-item">
+                        <h3 class="display-6 fw-bold text-primary">24/7</h3>
+                        <p class="text-muted">Available</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works -->
+<div class="row mt-5 reveal">
+    <div class="col-12 text-center mb-5">
+        <h2 class="display-5 fw-bold mb-3">How It Works</h2>
+        <p class="lead">Simple steps to get started</p>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="glass-card text-center h-100">
+            <div class="step-number mb-3">1</div>
+            <h5>Sign In</h5>
+            <p>Use your Google account to quickly sign in and get started.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="glass-card text-center h-100">
+            <div class="step-number mb-3">2</div>
+            <h5>Complete Profile</h5>
+            <p>Fill in your details including URN/CRN and branch information.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="glass-card text-center h-100">
+            <div class="step-number mb-3">3</div>
+            <h5>Take Quiz</h5>
+            <p>Answer questions across Math, Reasoning, and Verbal categories.</p>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="glass-card text-center h-100">
+            <div class="step-number mb-3">4</div>
+            <h5>Get Results</h5>
+            <p>Receive your score and detailed performance analysis.</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-gradient {
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .feature-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+    
+    .feature-icon-large {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin: 0 auto;
+    }
+    
+    .hero-image {
+        position: relative;
+        height: 400px;
+    }
+    
+    .floating-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 2rem;
+        display: inline-block;
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    .step-number {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 0 auto;
+    }
+    
+    .stat-item {
+        padding: 1rem;
+    }
+    
+    .btn-outline-light {
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        background: transparent;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-light:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.5);
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    @media (max-width: 768px) {
+        .hero-image {
+            height: 300px;
+            margin-top: 2rem;
+        }
+        
+        .floating-card {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}

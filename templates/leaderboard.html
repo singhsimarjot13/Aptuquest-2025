@@ -1,0 +1,510 @@
+{% extends "base.html" %}
+{% block title %}Leaderboard - ITian Club{% endblock %}
+
+{% block content %}
+<div class="leaderboard-container">
+    <!-- Header -->
+    <div class="glass-card fade-in-up mb-4">
+        <div class="text-center">
+            <h1 class="display-4 fw-bold mb-3">
+                <i class="fas fa-trophy me-2 text-warning"></i>
+                Leaderboard
+            </h1>
+            <p class="lead">See how you rank among your peers in the ITian Club Aptitude Quiz</p>
+        </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="glass-card reveal mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="text-start">
+                <h5 class="mb-1 text-muted">Admin Dashboard</h5>
+                <small class="text-muted">Quiz statistics and approvals</small>
+            </div>
+            <a href="{{ url_for('admin_approvals') }}" class="btn btn-outline-light">
+                <i class="fas fa-user-check me-2"></i>Pending Approvals
+            </a>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-3 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4 id="totalParticipants">0</h4>
+                    <p>Total Participants</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h4 id="avgScore">0</h4>
+                    <p>Average Score</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h4 id="topScore">0</h4>
+                    <p>Top Score</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h4 id="lastUpdated">Live</h4>
+                    <p>Last Updated</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Table -->
+    <div class="glass-card reveal">
+        <div class="table-responsive">
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th class="rank-header">
+                            <i class="fas fa-medal me-2"></i>Rank
+                        </th>
+                        <th class="profile-header">
+                            <i class="fas fa-user me-2"></i>Profile
+                        </th>
+                        <th class="name-header">
+                            <i class="fas fa-id-card me-2"></i>Name
+                        </th>
+                        <th class="score-header">
+                            <i class="fas fa-star me-2"></i>Total Score
+                        </th>
+                        <th class="category-header">
+                            <i class="fas fa-calculator me-2"></i>Math
+                        </th>
+                        <th class="category-header">
+                            <i class="fas fa-brain me-2"></i>Reasoning
+                        </th>
+                        <th class="category-header">
+                            <i class="fas fa-language me-2"></i>Verbal
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    <!-- Filled dynamically via JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="glass-card text-center" style="display: none;">
+        <div class="loading-spinner mb-3">
+            <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+        </div>
+        <p>Loading leaderboard data...</p>
+    </div>
+
+    <!-- No Data State -->
+    <div id="noDataState" class="glass-card text-center" style="display: none;">
+        <div class="no-data-icon mb-3">
+            <i class="fas fa-chart-bar fa-3x text-muted"></i>
+        </div>
+        <h4>No Data Available</h4>
+        <p class="text-muted">No participants have completed the quiz yet.</p>
+    </div>
+</div>
+
+<style>
+    .leaderboard-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .stat-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        margin: 0 auto 1rem;
+    }
+    
+    .stat-card h4 {
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-card p {
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 0;
+        font-weight: 500;
+    }
+    
+    .leaderboard-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    
+    .leaderboard-table th {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-weight: 600;
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    
+    .leaderboard-table td {
+        padding: 1rem;
+        color: white;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .leaderboard-table tbody tr {
+        transition: all 0.3s ease;
+    }
+    
+    .leaderboard-table tbody tr:hover {
+        background: rgba(255, 255, 255, 0.05);
+        transform: scale(1.01);
+    }
+    
+    .rank-header {
+        width: 80px;
+        text-align: center;
+    }
+    
+    .profile-header {
+        width: 100px;
+        text-align: center;
+    }
+    
+    .name-header {
+        min-width: 200px;
+    }
+    
+    .score-header {
+        width: 120px;
+        text-align: center;
+    }
+    
+    .category-header {
+        width: 100px;
+        text-align: center;
+    }
+    
+    .rank-cell {
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+    
+    .rank-1 {
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .rank-2 {
+        background: linear-gradient(135deg, #c0c0c0, #e5e5e5);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .rank-3 {
+        background: linear-gradient(135deg, #cd7f32, #daa520);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .profile-pic {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .profile-pic:hover {
+        transform: scale(1.1);
+        border-color: var(--primary-blue);
+    }
+    
+    .score-cell {
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+    
+    .category-score {
+        text-align: center;
+        font-weight: 500;
+        padding: 0.25rem 0.5rem;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        display: inline-block;
+        min-width: 30px;
+    }
+    
+    .current-user {
+        background: rgba(14, 165, 233, 0.2) !important;
+        border-left: 4px solid var(--primary-blue);
+    }
+    
+    .current-user:hover {
+        background: rgba(14, 165, 233, 0.3) !important;
+    }
+    
+    .score-update {
+        animation: scoreUpdate 1.5s ease;
+    }
+    
+    @keyframes scoreUpdate {
+        0% { background: rgba(255, 193, 7, 0.3); }
+        50% { background: rgba(255, 193, 7, 0.5); }
+        100% { background: transparent; }
+    }
+    
+    .score-up {
+        color: #28a745;
+        font-weight: bold;
+        margin-left: 0.5rem;
+    }
+    
+    .loading-spinner {
+        color: var(--primary-blue);
+    }
+    
+    .no-data-icon {
+        color: rgba(255, 255, 255, 0.5);
+    }
+    
+    @media (max-width: 768px) {
+        .leaderboard-table {
+            font-size: 0.9rem;
+        }
+        
+        .leaderboard-table th,
+        .leaderboard-table td {
+            padding: 0.5rem;
+        }
+        
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .stat-card {
+            padding: 1rem;
+        }
+        
+        .stat-card h4 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<script>
+    const userEmail = "{{ session['user_email'] }}";
+    let previousScores = {};
+    let previousCategoryScores = {};
+    let updateCount = 0;
+
+    async function fetchLeaderboard() {
+        try {
+            showLoading();
+            console.log("Fetching leaderboard data...");
+            
+            const response = await fetch("/leaderboard_data");
+            console.log("Response status:", response.status);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
+            const result = await response.json();
+            console.log("Leaderboard data:", result);
+            
+            if (!result.success) {
+                console.error("Leaderboard fetch failed:", result.error);
+                showError();
+                return;
+            }
+            
+            const data = result.data || [];
+            console.log("Participants data:", data);
+            
+            if (data.length === 0) {
+                showNoData();
+                return;
+            }
+            
+            updateStats(data);
+            updateTable(data);
+            updateCount++;
+            
+        } catch (err) {
+            console.error("Failed to fetch leaderboard:", err);
+            showError();
+        }
+    }
+
+    function updateStats(data) {
+        const totalParticipants = data.length;
+        const avgScore = data.reduce((sum, p) => sum + (p.score || 0), 0) / totalParticipants;
+        const topScore = Math.max(...data.map(p => p.score || 0));
+        
+        document.getElementById('totalParticipants').textContent = totalParticipants;
+        document.getElementById('avgScore').textContent = avgScore.toFixed(1);
+        document.getElementById('topScore').textContent = topScore;
+        document.getElementById('lastUpdated').textContent = updateCount === 0 ? 'Live' : 'Just now';
+    }
+
+    function updateTable(data) {
+        const tbody = document.getElementById("leaderboard-body");
+        tbody.innerHTML = "";
+
+        data.forEach((p, index) => {
+            const row = document.createElement("tr");
+            const isCurrentUser = (p.email === userEmail);
+            
+            if (isCurrentUser) {
+                row.classList.add('current-user');
+            }
+
+            const mathScore = (p.category_scores && p.category_scores.Math) || 0;
+            const reasoningScore = (p.category_scores && p.category_scores.Reasoning) || 0;
+            const verbalScore = (p.category_scores && p.category_scores.Verbal) || 0;
+            const totalScore = p.score || 0;
+
+            row.innerHTML = `
+                <td class="rank-cell ${index < 3 ? `rank-${index + 1}` : ''}">
+                    ${index + 1}
+                </td>
+                <td class="text-center">
+                    ${p.profile_pic ? 
+                        `<img src="${p.profile_pic}" alt="Profile" class="profile-pic">` : 
+                        '<div class="profile-pic bg-secondary d-flex align-items-center justify-content-center"><i class="fas fa-user"></i></div>'
+                    }
+                </td>
+                <td>
+                    <strong>${p.name || "Unknown"}</strong>
+                    ${isCurrentUser ? '<span class="badge bg-primary ms-2">You</span>' : ''}
+                </td>
+                <td class="score-cell total-score">${totalScore}</td>
+                <td class="text-center">
+                    <span class="category-score math-score">${mathScore}</span>
+                </td>
+                <td class="text-center">
+                    <span class="category-score reasoning-score">${reasoningScore}</span>
+                </td>
+                <td class="text-center">
+                    <span class="category-score verbal-score">${verbalScore}</span>
+                </td>
+            `;
+
+            if (isCurrentUser) {
+                if (!previousCategoryScores[p.email]) previousCategoryScores[p.email] = {};
+
+                // Animate total score
+                if (previousScores[p.email] !== undefined && previousScores[p.email] !== totalScore) {
+                    animateRowCell(row.querySelector(".total-score"));
+                }
+
+                // Animate categories if improved
+                checkCategory(row.querySelector(".math-score"), mathScore, "Math", p.email);
+                checkCategory(row.querySelector(".reasoning-score"), reasoningScore, "Reasoning", p.email);
+                checkCategory(row.querySelector(".verbal-score"), verbalScore, "Verbal", p.email);
+
+                previousCategoryScores[p.email] = { Math: mathScore, Reasoning: reasoningScore, Verbal: verbalScore };
+                previousScores[p.email] = totalScore;
+            }
+
+            tbody.appendChild(row);
+        });
+        
+        hideLoading();
+    }
+
+    function checkCategory(cell, currentScore, category, email) {
+        const prev = (previousCategoryScores[email] && previousCategoryScores[email][category]) || 0;
+        if (currentScore > prev) {
+            cell.innerHTML += ' <span class="score-up">↑</span>';
+            animateRowCell(cell);
+        }
+    }
+
+    function animateRowCell(cell) {
+        cell.classList.add("score-update");
+        setTimeout(() => {
+            cell.classList.remove("score-update");
+        }, 1500);
+    }
+
+    function showLoading() {
+        document.getElementById('loadingState').style.display = 'block';
+        document.getElementById('noDataState').style.display = 'none';
+    }
+
+    function hideLoading() {
+        document.getElementById('loadingState').style.display = 'none';
+    }
+
+    function showNoData() {
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('noDataState').style.display = 'block';
+    }
+
+    function showError() {
+        hideLoading();
+        const tbody = document.getElementById("leaderboard-body");
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center text-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Failed to load leaderboard data. Please refresh the page.
+                </td>
+            </tr>
+        `;
+    }
+
+    // Initial load
+    fetchLeaderboard();
+    
+    // Refresh every 10 seconds
+    setInterval(fetchLeaderboard, 10000);
+</script>
+{% endblock %}

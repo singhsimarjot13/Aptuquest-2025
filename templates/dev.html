@@ -1,0 +1,680 @@
+{% extends "base.html" %}
+{% block title %}Meet the Developer - ITian Club{% endblock %}
+
+{% block content %}
+<div class="developer-container">
+    <!-- Hero Section -->
+    <div class="glass-card fade-in-up mb-5">
+        <div class="text-center">
+            <div class="developer-avatar-container">
+                <div class="developer-avatar">
+                    <img src="{{ url_for('static', filename='images/Itian.jpg') }}" alt="Developer Photo" class="avatar-img">
+                    <div class="avatar-glow"></div>
+                </div>
+            </div>
+            <h1 class="display-4 fw-bold mb-3">
+                <i class="fas fa-code me-2 text-primary"></i>
+                Meet the Developer
+            </h1>
+            <p class="lead">The brilliant mind behind this amazing aptitude quiz platform</p>
+        </div>
+    </div>
+
+    <!-- Developer Info Card -->
+    <div class="glass-card reveal mb-5">
+        <div class="row align-items-center">
+            <div class="col-lg-4 text-center mb-4 mb-lg-0">
+                <div class="developer-photo-container">
+                    <img src="{{ url_for('static', filename='images/simar.png') }}" alt="Developer Photo" class="developer-photo">
+                    <div class="photo-overlay">
+                        <div class="social-links">
+                            <a href="https://github.com/singhsimarjot13" class="social-link" title="GitHub">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/simarjot-singh-a65b08261/" class="social-link" title="LinkedIn">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="mailto:simarjot875@gmail.com" class="social-link" title="Email">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="col-lg-8">
+                <div class="developer-info">
+                    <h2 class="developer-name mb-3">
+                        <i class="fas fa-user-circle me-2"></i>
+                        Simarjot Singh
+                    </h2>
+                    
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <div class="info-content">
+                                <h5>Position</h5>
+                                <p>Co-coordinator - ITian Club</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="info-content">
+                                <h5>Batch</h5>
+                                <p>2022-2026</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-code-branch"></i>
+                            </div>
+                            <div class="info-content">
+                                <h5>Branch</h5>
+                                <p>Information Technology</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            <div class="info-content">
+                                <h5>Specialization</h5>
+                                <p>Full-Stack Development</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="glass-card reveal mb-5">
+        <div class="row align-items-center">
+            <div class="col-lg-4 text-center mb-4 mb-lg-0">
+                <div class="developer-photo-container">
+                    <img src="{{ url_for('static', filename='images/gursimran.jpeg') }}" alt="Developer Photo" class="developer-photo">
+                    <div class="photo-overlay">
+                        <div class="social-links">
+                            <a href="#" class="social-link" title="GitHub">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="social-link" title="LinkedIn">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="mailto:ekam2437@gmail.com" class="social-link" title="Email">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="developer-info">
+                    <h2 class="developer-name mb-3">
+                        <i class="fas fa-user-circle me-2"></i>
+                        Gur Simran Singh
+                    </h2>
+                    
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <div class="info-content">
+                                <h5>Position</h5>
+                                <p>Software Developer Member - ITian Club</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="info-content">
+                                <h5>Batch</h5>
+                                <p>2025-2029</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-code-branch"></i>
+                            </div>
+                            <div class="info-content">
+                                <h5>Branch</h5>
+                                <p>Information Technology</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            <div class="info-content">
+                                <h5>Specialization</h5>
+                                <p>Full-Stack Development</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Skills & Technologies -->
+    <div class="glass-card reveal mb-5">
+        <div class="text-center mb-4">
+            <h3 class="section-title">
+                <i class="fas fa-tools me-2"></i>
+                Skills & Technologies
+            </h3>
+            <p class="text-muted">Technologies used to build this amazing platform</p>
+        </div>
+        
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h5 class="skill-category-title">
+                    <i class="fas fa-server me-2"></i>
+                    Backend
+                </h5>
+                <div class="skill-tags">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Flask</span>
+                    <span class="skill-tag">SQLAlchemy</span>
+                    <span class="skill-tag">PostgreSQL</span>
+                </div>
+            </div>
+            
+            <div class="skill-category">
+                <h5 class="skill-category-title">
+                    <i class="fas fa-paint-brush me-2"></i>
+                    Frontend
+                </h5>
+                <div class="skill-tags">
+                    <span class="skill-tag">HTML5</span>
+                    <span class="skill-tag">CSS3</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">Bootstrap</span>
+                </div>
+            </div>
+            
+            <div class="skill-category">
+                <h5 class="skill-category-title">
+                    <i class="fas fa-cloud me-2"></i>
+                    Services
+                </h5>
+                <div class="skill-tags">
+                    <span class="skill-tag">Google OAuth</span>
+                    <span class="skill-tag">Email Services</span>
+                    <span class="skill-tag">Session Management</span>
+                    <span class="skill-tag">Background Tasks</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Features -->
+    <div class="glass-card reveal mb-5">
+        <div class="text-center mb-4">
+            <h3 class="section-title">
+                <i class="fas fa-star me-2"></i>
+                Platform Features
+            </h3>
+            <p class="text-muted">What makes this quiz platform special</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h5>Secure Authentication</h5>
+                <p>Google OAuth integration for secure and seamless login experience</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h5>Real-time Timer</h5>
+                <p>Advanced countdown timer with visual feedback and auto-submit functionality</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h5>Live Leaderboard</h5>
+                <p>Real-time leaderboard with live updates and performance analytics</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h5>Responsive Design</h5>
+                <p>Beautiful, responsive design that works perfectly on all devices</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h5>Email Reports</h5>
+                <p>Detailed quiz results sent via email with comprehensive analysis</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <h5>Modern UI/UX</h5>
+                <p>Glassmorphism design with smooth animations and intuitive interface</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fun Facts -->
+    <div class="glass-card reveal mb-5">
+        <div class="text-center mb-4">
+            <h3 class="section-title">
+                <i class="fas fa-lightbulb me-2"></i>
+                Fun Facts
+            </h3>
+            <p class="text-muted">Some interesting details about the development process</p>
+        </div>
+        
+        <div class="fun-facts">
+            <div class="fact-item">
+                <div class="fact-number">500+</div>
+                <div class="fact-text">Lines of Code</div>
+            </div>
+            
+            <div class="fact-item">
+                <div class="fact-number">15+</div>
+                <div class="fact-text">Hours of Development</div>
+            </div>
+            
+            <div class="fact-item">
+                <div class="fact-number">10+</div>
+                <div class="fact-text">Technologies Used</div>
+            </div>
+            
+            <div class="fact-item">
+                <div class="fact-number">100%</div>
+                <div class="fact-text">Passion & Dedication</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="glass-card reveal text-center">
+        <h3 class="mb-4">
+            <i class="fas fa-heart me-2 text-danger"></i>
+            Thank You for Using This Platform!
+        </h3>
+        <p class="lead mb-4">
+            This quiz platform was built with love and dedication to provide the best experience for ITian Club members.
+        </p>
+        <div class="cta-buttons">
+            <a href="{{ url_for('index') }}" class="btn btn-premium btn-lg me-3">
+                <i class="fas fa-home me-2"></i>
+                Back to Home
+            </a>
+            <a href="{{ url_for('instructions') }}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-play me-2"></i>
+                Take Quiz
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .developer-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    
+    .developer-avatar-container {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 2rem;
+    }
+    
+    .developer-avatar {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: 0 auto;
+    }
+    
+    .avatar-img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .avatar-glow {
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, var(--primary-blue), var(--primary-purple));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+    }
+    
+    .developer-avatar:hover .avatar-glow {
+        opacity: 0.3;
+    }
+    
+    .developer-avatar:hover .avatar-img {
+        transform: scale(1.05);
+        border-color: var(--primary-blue);
+    }
+    
+    .developer-photo-container {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .developer-photo {
+        width: 200px;
+        height: 200px;
+        border-radius: 20px;
+        object-fit: cover;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .photo-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .developer-photo-container:hover .photo-overlay {
+        opacity: 1;
+    }
+    
+    .developer-photo-container:hover .developer-photo {
+        transform: scale(1.05);
+    }
+    
+    .social-links {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .social-link {
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+    
+    .social-link:hover {
+        background: var(--primary-blue);
+        border-color: var(--primary-blue);
+        transform: translateY(-3px);
+        color: white;
+    }
+    
+    .developer-name {
+        font-size: 2.5rem;
+        background: linear-gradient(135deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .info-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+    }
+    
+    .info-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+    }
+    
+    .info-content h5 {
+        color: white;
+        margin-bottom: 0.25rem;
+        font-weight: 600;
+    }
+    
+    .info-content p {
+        color: #d1d5db;
+        margin-bottom: 0;
+        font-size: 0.9rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+        color: white;
+        margin-bottom: 1rem;
+    }
+    
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+    
+    .skill-category {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .skill-category:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-5px);
+    }
+    
+    .skill-category-title {
+        color: white;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+    }
+    
+    .skill-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .skill-tag {
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .skill-tag:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+    }
+    
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+    
+    .feature-item {
+        text-align: center;
+        padding: 2rem 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-5px);
+    }
+    
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        margin: 0 auto 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .feature-item:hover .feature-icon {
+        transform: scale(1.1);
+    }
+    
+    .feature-item h5 {
+        color: white;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+    }
+    
+    .feature-item p {
+        color: #d1d5db;
+        line-height: 1.6;
+    }
+    
+    .fun-facts {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    
+    .fact-item {
+        text-align: center;
+        padding: 2rem 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .fact-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-5px);
+    }
+    
+    .fact-number {
+        font-size: 3rem;
+        font-weight: bold;
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+    }
+    
+    .fact-text {
+        color: #d1d5db;
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+    
+    .cta-buttons {
+        margin-top: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+        .developer-name {
+            font-size: 2rem;
+        }
+        
+        .developer-photo {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .skills-grid,
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .fun-facts {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .fact-number {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}

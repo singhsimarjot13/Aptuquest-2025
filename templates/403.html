@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Access Denied - ITian Club{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 text-center">
+        <div class="glass-card fade-in-up">
+            <div class="error-icon mb-4">
+                <i class="fas fa-lock fa-4x text-warning"></i>
+            </div>
+            <h1 class="display-4 fw-bold mb-3">403 - Access Denied</h1>
+            <p class="lead mb-4">Sorry, you don't have permission to access this page.</p>
+            <p class="mb-4">This page requires special privileges or you may need to log in.</p>
+            
+            <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                <a href="{{ url_for('index') }}" class="btn btn-premium btn-lg">
+                    <i class="fas fa-home me-2"></i>
+                    Go to Home
+                </a>
+                <a href="{{ url_for('google.login') }}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-sign-in-alt me-2"></i>
+                    Login
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .error-icon {
+        animation: shake 2s infinite;
+    }
+    
+    @keyframes shake {
+        0%, 100% {
+            transform: translateX(0);
+        }
+        10%, 30%, 50%, 70%, 90% {
+            transform: translateX(-5px);
+        }
+        20%, 40%, 60%, 80% {
+            transform: translateX(5px);
+        }
+    }
+</style>
+{% endblock %}
+

@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block title %}Approvals - ITian Club{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <!-- Header Card -->
+    <div class="glass-card fade-in-up mb-4 p-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="fw-bold mb-1">
+                    <i class="fas fa-user-check me-2 text-success"></i>Pending Approvals
+                </h2>
+                <p class="mb-0 text-muted">Review and approve or reject submitted profiles</p>
+            </div>
+            <a href="{{ url_for('leaderboard') }}" class="btn btn-outline-light">
+                <i class="fas fa-trophy me-2"></i>Leaderboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Pending Approvals Table -->
+    <div class="glass-card reveal p-4">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover table-striped align-middle leaderboard-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th><i class="fas fa-user me-2"></i>Name</th>
+                        <th><i class="fas fa-envelope me-2"></i>Email</th>
+                        <th><i class="fas fa-hashtag me-2"></i>URN</th>
+                        <th><i class="fas fa-hashtag me-2"></i>CRN</th>
+                        <th><i class="fas fa-code-branch me-2"></i>Branch</th>
+                        <th><i class="fas fa-graduation-cap me-2"></i>Year</th>
+                        <th><i class="fas fa-clock me-2"></i>Submitted</th>
+                        <th class="text-center"><i class="fas fa-cogs me-2"></i>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="pending-body">
+                    <tr>
+                        <td colspan="8" class="text-center text-muted">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+async function loadPending() {
+    const tbody = document.getElementById('pending-body');
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">Loading...</td></tr>`;
+
+    try {
+        const res = await fetch('/admin/pending');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const json = await res.json();
+        if (!json.success) throw new Error('API error');
+
+        const data = json.data || [];
+        if (data.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">No pending profiles.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = '';
+        data.forEach(p => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${p.name || '-'}</strong></td>
+                <td>${p.email || '-'}</td>
+                <td>${p.urn || '-'}</td>
+                <td>${p.crn || '-'}</td>
+                <td>${p.branch || '-'}</td>
+                <td>${p.year || '-'}</td>
+                <td>${p.created_at ? new Date(p.created_at).toLocaleString() : '-'}</td>
+                <td class="text-center">
+                    <button class="btn btn-success btn-sm me-2" onclick="approve(${p.id})">
+                        <i class="fas fa-check me-1"></i>Approve
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="reject(${p.id})">
+                        <i class="fas fa-times me-1"></i>Reject
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Failed to load. Please refresh.</td></tr>`;
+        console.error(e);
+    }
+}
+
+async function approve(id) {
+    try {
+        await fetch(`/admin/approve/${id}`, { method: 'POST' });
+        loadPending();
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+async function reject(id) {
+    try {
+        await fetch(`/admin/reject/${id}`, { method: 'POST' });
+        loadPending();
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', loadPending);
+</script>
+
+<style>
+/* Glass effect for cards */
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+/* Table improvements */
+.leaderboard-table th, 
+.leaderboard-table td {
+    vertical-align: middle;
+}
+
+.btn-sm {
+    font-size: 0.8rem;
+}
+
+/* Fade-in animations */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeInUp 0.6s forwards;
+}
+.table-responsive{
+    color: white;
+}
+
+@keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+</style>
+{% endblock %}

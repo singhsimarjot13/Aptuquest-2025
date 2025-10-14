@@ -1,0 +1,410 @@
+{% extends "base.html" %}
+{% block title %}Instructions - ITian Club Quiz{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <!-- Welcome Section -->
+        <div class="glass-card fade-in-up mb-4">
+            <div class="text-center">
+                <div class="welcome-icon mb-3">
+                    <i class="fas fa-user-circle fa-3x text-primary"></i>
+                </div>
+                <h1 class="display-4 fw-bold mb-3">Welcome, {{ user_name }}!</h1>
+                <p class="lead">You're about to begin your aptitude assessment. Please read the instructions carefully.</p>
+            </div>
+        </div>
+
+        <!-- Quiz Overview -->
+        <div class="glass-card reveal mb-4">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <h5>Total Questions</h5>
+                        <h3 class="text-primary">30 Questions</h3>
+                        <p class="text-muted">Carefully selected from our question bank</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h5>Time Limit</h5>
+                        <h3 class="text-primary">20 Minutes</h3>
+                        <p class="text-muted">Timer will be displayed during the quiz</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h5>Scoring</h5>
+                        <h3 class="text-primary">1 Mark Each</h3>
+                        <p class="text-muted">No negative marking for wrong answers</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h5>Categories</h5>
+                        <h3 class="text-primary">3 Categories</h3>
+                        <p class="text-muted">Math, Reasoning & Verbal Skills</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="glass-card reveal mb-4">
+            <h2 class="text-center mb-4">
+                <i class="fas fa-list-check me-2"></i>
+                Important Instructions
+            </h2>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="instruction-item">
+                        <div class="instruction-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="instruction-content">
+                            <h6>Individual Participation</h6>
+                            <p>Each participant must complete the quiz individually without any external help.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="instruction-item">
+                        <div class="instruction-icon">
+                              <i class="fas fa-stopwatch"></i>
+                        </div>
+                        <div class="instruction-content">
+                            <h6>Time Management</h6>
+                            <p>You must submit the quiz within the allocated time limit. Timer will be visible.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="instruction-item">
+                        <div class="instruction-icon">
+                            <i class="fas fa-ban"></i>
+                        </div>
+                        <div class="instruction-content">
+                            <h6>No Page Refresh</h6>
+                            <p>Do not refresh or navigate away from the quiz page during the test.If you refresh or tried to siwtch the window, the test will be submitted automatically.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="instruction-item">
+                        <div class="instruction-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="instruction-content">
+                            <h6>Final Submission</h6>
+                            <p>3 warnings will be given if you try to escape from full screen mode or tried to switch the tabs after that test will be submitted automatically.Once submitted, answers cannot be changed or modified.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="instruction-item">
+                        <div class="instruction-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="instruction-content">
+                            <h6>Answer All Questions</h6>
+                            <p>Make sure to attempt all questions before submitting the quiz.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="instruction-item">
+                        <div class="instruction-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="instruction-content">
+                            <h6>Academic Integrity</h6>
+                            <p>Maintain academic honesty and avoid any form of cheating or plagiarism.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Breakdown -->
+        <div class="glass-card reveal mb-4">
+            <h2 class="text-center mb-4">
+                <i class="fas fa-chart-pie me-2"></i>
+                Quiz Categories
+            </h2>
+            
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="category-card math">
+                        <div class="category-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h5>Mathematics</h5>
+                        <p>Test your numerical and mathematical reasoning skills with problems involving arithmetic, algebra, and logical calculations.</p>
+                        <div class="category-stats">
+                            <span class="badge bg-primary">10 Questions</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <div class="category-card reasoning">
+                        <div class="category-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h5>Logical Reasoning</h5>
+                        <p>Evaluate your analytical thinking and problem-solving abilities through pattern recognition and logical sequences.</p>
+                        <div class="category-stats">
+                            <span class="badge bg-primary">10 Questions</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <div class="category-card verbal">
+                        <div class="category-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h5>Verbal Skills</h5>
+                        <p>Assess your vocabulary, grammar, and comprehension skills through word relationships and language understanding.</p>
+                        <div class="category-stats">
+                            <span class="badge bg-primary">10 Questions</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ready to Start -->
+        <div class="glass-card reveal text-center">
+            <h3 class="mb-4">Ready to Begin Your Assessment?</h3>
+            <p class="lead mb-4">Make sure you have a stable internet connection and are in a quiet environment.</p>
+            
+            <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                <button id="startQuizBtn" class="btn btn-premium btn-lg px-5">
+                    <i class="fas fa-play me-2"></i>
+                    Start Quiz Now
+                </button>
+                <a href="{{ url_for('index') }}" class="btn btn-outline-light btn-lg px-5">
+                    <i class="fas fa-arrow-left me-2"></i>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .welcome-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin: 0 auto;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    .info-card {
+        text-align: center;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .info-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .info-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin: 0 auto 1rem;
+        font-size: 1.5rem;
+    }
+    
+    .instruction-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .instruction-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateX(5px);
+    }
+    
+    .instruction-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .instruction-content h6 {
+        margin-bottom: 0.5rem;
+        color: white;
+        font-weight: 600;
+    }
+    
+    .instruction-content p {
+        margin-bottom: 0;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9rem;
+    }
+    
+    .category-card {
+        text-align: center;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .category-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .category-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin: 0 auto 1rem;
+        font-size: 2rem;
+    }
+    
+    .category-card h5 {
+        color: white;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+    
+    .category-card p {
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .category-stats {
+        margin-top: auto;
+    }
+    
+    .badge {
+        font-size: 0.8rem;
+        padding: 0.5rem 1rem;
+    }
+    
+    @media (max-width: 768px) {
+        .instruction-item {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .instruction-icon {
+            margin-right: 0;
+            margin-bottom: 1rem;
+        }
+        
+        .info-card, .category-card {
+            padding: 1rem;
+        }
+    }
+</style>
+
+<script>
+    // Device detection and restriction
+    function detectDevice() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        
+        // Check for mobile devices
+        const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+        
+        // Check for tablet devices
+        const isTablet = /ipad|android(?!.*mobile)|tablet/i.test(userAgent);
+        
+        // Check screen size (additional check)
+        const isSmallScreen = window.innerWidth <= 768;
+        
+        return {
+            isMobile: isMobile,
+            isTablet: isTablet,
+            isSmallScreen: isSmallScreen,
+            isRestricted: isMobile || isTablet || isSmallScreen
+        };
+    }
+
+    // Check device when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const deviceInfo = detectDevice();
+        
+        if (deviceInfo.isRestricted) {
+            // Redirect to device restricted page
+            window.location.href = '/device-restricted';
+            return;
+        }
+        
+        // Setup quiz start button
+        const startQuizBtn = document.getElementById('startQuizBtn');
+        if (startQuizBtn) {
+            startQuizBtn.addEventListener('click', function() {
+                // Double check device before starting quiz
+                const currentDeviceInfo = detectDevice();
+                if (currentDeviceInfo.isRestricted) {
+                    window.location.href = '/device-restricted';
+                    return;
+                }
+                
+                // Proceed to quiz
+                window.location.href = '{{ url_for("quiz") }}';
+            });
+        }
+    });
+</script>
+{% endblock %}

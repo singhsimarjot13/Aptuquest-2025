@@ -1,0 +1,697 @@
+{% extends "base.html" %}
+{% block title %}Aptitude Quiz - ITian Club{% endblock %}
+
+{% block content %}
+<!-- Left Sidebar Navigation -->
+<div class="quiz-sidebar" id="quizSidebar">
+    <div class="sidebar-header">
+        <h5><i class="fas fa-list me-2"></i>Quiz Sections</h5>
+        <button class="sidebar-toggle d-lg-none" id="sidebarToggle">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="sidebar-content">
+        <div class="section-nav-item active" data-section="Verbal">
+            <div class="section-info">
+                <i class="fas fa-language me-2"></i>
+                <span>Section A: Verbal</span>
+            </div>
+            <div class="section-progress">
+                <span class="section-count" id="verbal-count">0</span>
+                <span class="section-total">/10</span>
+            </div>
+        </div>
+        <div class="section-nav-item" data-section="Math">
+            <div class="section-info">
+                <i class="fas fa-calculator me-2"></i>
+                <span>Section B: Quantitative</span>
+            </div>
+            <div class="section-progress">
+                <span class="section-count" id="math-count">0</span>
+                <span class="section-total">/10</span>
+            </div>
+        </div>
+        <div class="section-nav-item" data-section="Reasoning">
+            <div class="section-info">
+                <i class="fas fa-brain me-2"></i>
+                <span>Section C: Reasoning</span>
+            </div>
+            <div class="section-progress">
+                <span class="section-count" id="reasoning-count">0</span>
+                <span class="section-total">/10</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Mobile Sidebar Overlay -->
+<div class="sidebar-overlay d-lg-none" id="sidebarOverlay"></div>
+
+<!-- Mobile Sidebar Toggle Button -->
+<button class="mobile-sidebar-toggle d-lg-none" id="mobileSidebarToggle">
+    <i class="fas fa-bars"></i>
+</button>
+
+<div class="quiz-container" id="quizContainer">
+    <!-- Quiz Header -->
+    <div class="glass-card mb-4 fade-in-up">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="quiz-heading mb-2">
+                    <i class="fas fa-user me-2"></i>
+                    Welcome, {{ session.user_name }}!
+                </h2>
+                <p class="text-muted mb-0">Ready to test your aptitude skills?</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <div class="timer-container">
+                    <div class="timer-display">
+                        <i class="fas fa-clock me-2"></i>
+                        <span id="timer" class="timer-text">{{ "%02d" % (timer // 60) }}:{{ "%02d" % (timer % 60) }}</span>
+                    </div>
+                    <div class="timer-progress">
+                        <div id="timerProgress" class="timer-bar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="glass-card mb-4 reveal">
+        <div class="progress-info">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="progress-text">Progress: <span id="currentQuestion">1</span> of {{ questions|length }}</span>
+                <span class="progress-percentage"><span id="progressPercentage">0</span>%</span>
+            </div>
+            <div class="progress-container">
+                <div id="progress" class="progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Quiz Form -->
+    <form method="POST" id="quizForm" data-timer="{{ timer }}">
+        <!-- Fullscreen prompt modal -->
+        <div class="modal fade show" id="fullscreenModal" tabindex="-1" aria-hidden="true" style="display: block; background: rgba(0,0,0,0.8); z-index: 1055;">
+            <div class="modal-dialog modal-dialog-centered" style="pointer-events: auto; z-index: 1056;">
+              <div class="modal-content quiz-fs-modal" style="background-color:#1b1b1b; color:#fff; border-radius:12px; box-shadow:0 0 20px rgba(0,0,0,0.5);">
+                <div class="modal-header border-0">
+                  <h5 class="modal-title"><i class="fas fa-expand me-2"></i>Enter Fullscreen to Start</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p>For a fair experience, the quiz runs in fullscreen and tracks tab switches. Exiting fullscreen or switching tabs 3 times will auto-submit.</p>
+                </div>
+                <div class="modal-footer border-0">
+                  <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" id="enterFullscreenBtn" class="btn btn-premium">Enter Fullscreen &amp; Start</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% for q in questions %}
+        <div class="question-card glass-card reveal" data-index="{{ loop.index0 }}">
+            <!-- Question Header -->
+            <div class="question-header mb-4">
+                <div class="category-badge">
+                    <i class="fas fa-{{ 'calculator' if q.category == 'Math' else 'brain' if q.category == 'Reasoning' else 'language' }} me-2"></i>
+                    {{ q.category }}
+                </div>
+                <div class="question-number">
+                    Question {{ loop.index }} of {{ questions|length }}
+                </div>
+            </div>
+
+            <!-- Question Text -->
+            <div class="question-content mb-4">
+                <h4 class="question-text">{{ q.question }}</h4>
+            </div>
+
+            <!-- Options -->
+            <div class="options-container">
+                {% if q.multiple %}
+                    <p class="text-muted mb-3"><i class="fas fa-info-circle me-1"></i> Select all that apply</p>
+                    {% for option in q.options %}
+                        <label class="option-item">
+                            <input type="checkbox" name="q{{ q.id }}" value="{{ option }}" class="option-input">
+                            <span class="option-text">{{ option }}</span>
+                            <div class="option-checkmark">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </label>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted mb-3"><i class="fas fa-info-circle me-1"></i> Select the best answer</p>
+                    {% for option in q.options %}
+                        <label class="option-item">
+                            <input type="radio" name="q{{ q.id }}" value="{{ option }}" required class="option-input">
+                            <span class="option-text">{{ option }}</span>
+                            <div class="option-checkmark">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </label>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+        </div>
+        {% endfor %}
+
+        <!-- Global Navigation -->
+        <div class="question-navigation glass-card mt-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-outline-light" id="prevBtn" style="display: none;">
+                    <i class="fas fa-arrow-left me-2"></i>Previous
+                </button>
+                
+                <div class="question-indicators">
+                    {% for i in range(questions|length) %}
+                        <button type="button" class="question-indicator" data-question="{{ i + 1 }}">
+                            {{ i + 1 }}
+                        </button>
+                    {% endfor %}
+                </div>
+                
+                <button type="button" class="btn btn-premium" id="nextBtn">
+                    Next<i class="fas fa-arrow-right ms-2"></i>
+                </button>
+                
+                <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
+                    <i class="fas fa-paper-plane me-2"></i>Submit Quiz
+                </button>
+            </div>
+        </div>
+
+        <!-- Submit Section -->
+        <div class="submit-section glass-card reveal" style="display: none;">
+            <div class="text-center">
+                <h3 class="mb-4">
+                    <i class="fas fa-check-circle text-success me-2"></i>
+                    Quiz Complete!
+                </h3>
+                <p class="lead mb-4">You've answered all questions. Ready to submit your answers?</p>
+                
+                <div class="summary-stats mb-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stat-item">
+                                <h4 class="text-primary">{{ questions|length }}</h4>
+                                <p>Total Questions</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-item">
+                                <h4 class="text-primary" id="answeredCount">0</h4>
+                                <p>Answered</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-item">
+                                <h4 class="text-primary" id="remainingCount">{{ questions|length }}</h4>
+                                <p>Remaining</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-premium btn-lg px-5">
+                    <i class="fas fa-paper-plane me-2"></i>
+                    Submit Quiz
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    /* Quiz Sidebar Styles */
+    .quiz-sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        background: rgba(17, 24, 39, 0.95);
+        backdrop-filter: blur(20px);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .sidebar-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .sidebar-header h5 {
+        color: white;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .sidebar-toggle {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 4px;
+        transition: background 0.3s ease;
+    }
+
+    .sidebar-toggle:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-content {
+        flex: 1;
+        padding: 1rem 0;
+        overflow-y: auto;
+    }
+
+    .section-nav-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-left: 3px solid transparent;
+        margin: 0.25rem 0;
+    }
+
+    .section-nav-item:hover {
+        background: rgba(37, 99, 235, 0.1);
+        border-left-color: rgba(37, 99, 235, 0.5);
+    }
+
+    .section-nav-item.active {
+        background: rgba(37, 99, 235, 0.2);
+        border-left-color: var(--primary-blue);
+    }
+
+    .section-info {
+        display: flex;
+        align-items: center;
+        color: white;
+        font-weight: 500;
+    }
+
+    .section-progress {
+        display: flex;
+        align-items: center;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+    }
+
+    .section-count {
+        background: var(--primary-blue);
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 12px;
+        font-weight: bold;
+        min-width: 24px;
+        text-align: center;
+    }
+
+    .section-total {
+        margin-left: 0.25rem;
+    }
+
+    .sidebar-footer {
+        padding: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .quiz-timer-sidebar {
+        background: rgba(37, 99, 235, 0.2);
+        padding: 1rem;
+        border-radius: 12px;
+        text-align: center;
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        display: none;
+    }
+
+    /* Adjust quiz container for sidebar */
+    .quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+        margin-left: 280px;
+        transition: margin-left 0.3s ease;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 991px) {
+        .quiz-sidebar {
+            transform: translateX(-100%);
+        }
+
+        .quiz-sidebar.show {
+            transform: translateX(0);
+        }
+
+        .quiz-container {
+            margin-left: 0;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+    }
+
+    /* Mobile sidebar toggle button */
+    .mobile-sidebar-toggle {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1001;
+        background: var(--primary-blue);
+        color: white;
+        border: none;
+        padding: 0.75rem;
+        border-radius: 8px;
+        cursor: pointer;
+        display: none;
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+    }
+
+    @media (max-width: 991px) {
+        .mobile-sidebar-toggle {
+            display: block;
+        }
+    }
+</style>
+
+<style>
+    .quiz-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .timer-container {
+        text-align: center;
+    }
+    
+    .timer-display {
+        background: rgba(17, 24, 39, 0.8);
+        border-radius: 15px;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .timer-text {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #ffffff;
+    }
+    
+    .timer-progress {
+        width: 100%;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+    
+    .timer-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple));
+        border-radius: 3px;
+        transition: width 1s linear;
+    }
+    
+    .progress-container {
+        width: 100%;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple));
+        border-radius: 4px;
+        transition: width 0.3s ease;
+        width: 0%;
+    }
+    
+    .progress-text, .progress-percentage {
+        color: #ffffff;
+        font-weight: 600;
+    }
+    
+    .question-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .category-badge {
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    .question-number {
+        color: #d1d5db;
+        font-weight: 600;
+    }
+    
+    .question-text {
+        color: #ffffff;
+        font-size: 1.2rem;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+    
+    .options-container {
+        margin-top: 2rem;
+    }
+    
+    .option-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+        background: rgba(17, 24, 39, 0.6);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .option-item:hover {
+        background: rgba(37, 99, 235, 0.2);
+        border-color: var(--primary-blue);
+        transform: translateX(5px);
+    }
+    
+    .option-input {
+        display: none;
+    }
+    
+    .option-text {
+        color: #ffffff;
+        font-weight: 500;
+        margin-left: 1rem;
+        flex: 1;
+    }
+    
+    .option-checkmark {
+        width: 24px;
+        height: 24px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: transparent;
+        transition: all 0.3s ease;
+    }
+    
+    .option-item.selected .option-checkmark {
+        background: var(--primary-blue);
+        border-color: var(--primary-blue);
+        color: white;
+    }
+    
+    .question-navigation {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 1.5rem;
+    }
+    
+    .question-indicators {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .question-indicator {
+        width: 40px;
+        height: 40px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        background: rgba(17, 24, 39, 0.6);
+        border-radius: 50%;
+        color: #ffffff;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .question-indicator:hover {
+        background: rgba(37, 99, 235, 0.2);
+        border-color: var(--primary-blue);
+    }
+    
+    .question-indicator.active {
+        background: var(--primary-blue);
+        border-color: var(--primary-blue);
+    }
+    
+    .question-indicator.answered {
+        background: var(--primary-purple);
+        border-color: var(--primary-purple);
+    }
+    
+    .summary-stats {
+        background: rgba(17, 24, 39, 0.6);
+        border-radius: 15px;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-item h4 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-item p {
+        color: #d1d5db;
+        margin-bottom: 0;
+    }
+    
+    /* Section Navigation Styles */
+    .section-navigation {
+        text-align: center;
+    }
+    
+    .section-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .section-tab {
+        background: rgba(17, 24, 39, 0.6);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        padding: 0.75rem 1.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        position: relative;
+    }
+    
+    .section-tab:hover {
+        background: rgba(37, 99, 235, 0.2);
+        border-color: var(--primary-blue);
+        transform: translateY(-2px);
+    }
+    
+    .section-tab.active {
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        border-color: var(--primary-blue);
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+    }
+    
+    .section-count {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+    
+    .section-tab.active .section-count {
+        background: rgba(255, 255, 255, 0.3);
+    }
+    
+    @media (max-width: 768px) {
+        .question-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .question-navigation {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .question-indicators {
+            order: -1;
+        }
+        
+        .timer-text {
+            font-size: 1.2rem;
+        }
+        
+        .section-tabs {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .section-tab {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+
+<!-- Quiz functionality is handled by script.js -->
+{% endblock %}

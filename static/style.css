@@ -1,0 +1,162 @@
+/* =================================
+   QUIZ CONTAINER
+   ================================= */
+.quiz-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fdfdfd;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    font-family: 'Poppins', sans-serif;
+}
+
+.quiz-heading {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.timer {
+    text-align: center;
+    font-weight: bold;
+    color: #ff4d4d;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+/* =================================
+   QUESTION CARD
+   ================================= */
+.question-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-left: 5px solid #4CAF50;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.question-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.category {
+    font-size: 0.9em;
+    color: #888;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.question-text {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+}
+
+.option-label {
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.option-label:hover {
+    background: #f0f0f0;
+}
+
+/* =================================
+   SUBMIT BUTTON
+   ================================= */
+.submit-btn {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 8px;
+    background: #4CAF50;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #45a049;
+}
+
+/* =================================
+   PROGRESS BAR
+   ================================= */
+.progress-bar {
+    width: 100%;
+    background-color: #eee;
+    border-radius: 10px;
+    margin: 15px 0;
+    height: 15px;
+    overflow: hidden;
+}
+
+#progress {
+    height: 100%;
+    background-color: #4CAF50;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+/* =================================
+   LEADERBOARD
+   ================================= */
+.leaderboard-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fdfdfd;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.leaderboard-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.leaderboard-container th, .leaderboard-container td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.leaderboard-container th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.leaderboard-container tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* =================================
+   PARTICIPANT HIGHLIGHT & SCORE ANIMATIONS
+   ================================= */
+.highlight-participant {
+    transition: background 0.5s ease;
+}
+
+.score-update {
+    background-color: #d4edda; /* light green */
+    transition: background 1.5s ease;
+}
+
+.score-up {
+    color: #28a745;
+    font-weight: bold;
+    margin-left: 4px;
+}

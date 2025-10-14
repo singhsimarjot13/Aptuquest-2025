@@ -1,0 +1,820 @@
+{% extends "base.html" %}
+{% block title %}Quiz Results - ITian Club{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    <!-- Success Header -->
+    <div class="glass-card fade-in-up mb-4">
+        <div class="text-center">
+            <div class="success-icon mb-3">
+                <i class="fas fa-check-circle fa-3x text-success"></i>
+            </div>
+            <h1 class="display-4 fw-bold mb-3">Congratulations, {{ name }}!</h1>
+            <p class="lead">Your quiz has been successfully submitted. Here's your performance summary.</p>
+        </div>
+    </div>
+
+    <!-- Score Display -->
+    <div class="glass-card reveal mb-4">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="score-display">
+                    <h2 class="mb-3">Your Total Score</h2>
+                    <div class="score-circle">
+                        <div class="score-number">{{ score }}</div>
+                        <div class="score-max">/ 30</div>
+                    </div>
+                    <div class="score-percentage">
+                        {{ "%.1f"|format((score / 30) * 100) }}%
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="score-details">
+                    <h4 class="mb-3">Performance Breakdown</h4>
+                    <div class="performance-item">
+                        <div class="performance-label">
+                            <i class="fas fa-calculator me-2"></i>Mathematics
+                        </div>
+                        <div class="performance-score">
+                            <span class="score-badge">{{ score if score <= 15 else 15 }}</span>
+                        </div>
+                    </div>
+                    <div class="performance-item">
+                        <div class="performance-label">
+                            <i class="fas fa-brain me-2"></i>Reasoning
+                        </div>
+                        <div class="performance-score">
+                            <span class="score-badge">{{ score if score <= 15 else 15 }}</span>
+                        </div>
+                    </div>
+                    <div class="performance-item">
+                        <div class="performance-label">
+                            <i class="fas fa-language me-2"></i>Verbal
+                        </div>
+                        <div class="performance-score">
+                            <span class="score-badge">{{ score if score <= 15 else 15 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievement Badge -->
+    <div class="glass-card reveal mb-4">
+        <div class="text-center">
+            <h3 class="mb-4">Achievement Unlocked!</h3>
+            <div class="achievement-badge">
+                {% if score >= 28 %}
+                    <i class="fas fa-crown fa-2x text-warning"></i>
+                    <h4 class="mt-2">Quiz Master</h4>
+                    <p class="text-muted">Outstanding performance!</p>
+                {% elif score >= 25 %}
+                    <i class="fas fa-star fa-2x text-warning"></i>
+                    <h4 class="mt-2">High Achiever</h4>
+                    <p class="text-muted">Excellent work!</p>
+                {% elif score >= 22 %}
+                    <i class="fas fa-medal fa-2x text-warning"></i>
+                    <h4 class="mt-2">Good Performer</h4>
+                    <p class="text-muted">Well done!</p>
+                {% else %}
+                    <i class="fas fa-thumbs-up fa-2x text-warning"></i>
+                    <h4 class="mt-2">Participant</h4>
+                    <p class="text-muted">Keep practicing!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Analysis -->
+    <div class="glass-card reveal mb-4">
+        <h3 class="text-center mb-4">Performance Analysis</h3>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="analysis-card">
+                    <div class="analysis-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h5>Overall Performance</h5>
+                    <p>
+                        {% if score >= 28 %}
+                            You've demonstrated exceptional aptitude skills across all categories. Your analytical thinking and problem-solving abilities are outstanding!
+                        {% elif score >= 25 %}
+                            You've shown strong aptitude skills with room for improvement. Your performance indicates good potential for growth.
+                        {% elif score >= 22 %}
+                            You've achieved a satisfactory performance. With practice, you can significantly improve your scores.
+                        {% else %}
+                            This assessment shows areas for improvement. Focus on strengthening your foundational skills.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="analysis-card">
+                    <div class="analysis-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h5>Recommendations</h5>
+                    <p>
+                        {% if score >= 28 %}
+                            Consider advanced aptitude training and competitive exams. You're ready for challenging assessments!
+                        {% elif score >= 25 %}
+                            Focus on time management and practice more complex problems to reach the next level.
+                        {% elif score >= 22 %}
+                            Regular practice with aptitude questions will help improve your performance significantly.
+                        {% else %}
+                            Start with basic aptitude concepts and gradually build up to more complex problems.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="glass-card reveal text-center">
+        <h3 class="mb-4">What's Next?</h3>
+        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+            <form method="POST" action="{{ url_for('send_quiz_email') }}" class="d-inline">
+                <button type="submit" class="btn btn-premium btn-lg px-5" id="emailReportBtn">
+                    <i class="fas fa-envelope me-2"></i>
+                    Send Detailed Report via Email
+                </button>
+            </form>
+            <button type="button" class="btn btn-success btn-lg px-5" id="viewReportBtn">
+                <i class="fas fa-chart-bar me-2"></i>
+                View Personalized Report
+            </button>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-light btn-lg px-5">
+                <i class="fas fa-home me-2"></i>
+                Back to Home
+            </a>
+        </div>
+        
+        <!-- Social Sharing -->
+        <div class="social-sharing mt-4">
+            <p class="text-muted mb-3">Share your achievement:</p>
+            <div class="d-flex gap-2 justify-content-center">
+                <a href="#" class="social-btn facebook" onclick="shareToFacebook()">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-btn twitter" onclick="shareToTwitter()">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-btn linkedin" onclick="shareToLinkedIn()">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="social-btn whatsapp" onclick="shareToWhatsApp()">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Personalized Report Modal -->
+<div class="modal fade" id="personalizedReportModal" tabindex="-1" aria-labelledby="personalizedReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" style="background: rgba(17, 24, 39, 0.95); color: white; border: 1px solid rgba(255, 255, 255, 0.1);">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="personalizedReportModalLabel">
+                    <i class="fas fa-chart-bar me-2"></i>Your Personalized Report
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Performance Charts -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="chart-container">
+                            <h6 class="text-center mb-3">Performance by Section</h6>
+                            <canvas id="sectionChart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="chart-container">
+                            <h6 class="text-center mb-3">Overall Performance</h6>
+                            <canvas id="overallChart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Analysis -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="analysis-section">
+                            <h6><i class="fas fa-chart-line me-2"></i>Performance Analysis</h6>
+                            <div id="performanceAnalysis">
+                                <!-- Dynamic content will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="analysis-section">
+                            <h6><i class="fas fa-lightbulb me-2"></i>Recommendations</h6>
+                            <div id="recommendations">
+                                <!-- Dynamic content will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Areas of Improvement -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="analysis-section">
+                            <h6><i class="fas fa-target me-2"></i>Areas of Improvement</h6>
+                            <div id="improvementAreas">
+                                <!-- Dynamic content will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .results-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .success-icon {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, #28a745, #20c997);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin: 0 auto;
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    .score-display {
+        text-align: center;
+    }
+    
+    .score-circle {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .score-number {
+        font-size: 3rem;
+        font-weight: bold;
+        color: white;
+        line-height: 1;
+    }
+    
+    .score-max {
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: -0.5rem;
+    }
+    
+    .score-percentage {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary-blue);
+    }
+    
+    .performance-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .performance-item:last-child {
+        border-bottom: none;
+    }
+    
+    .performance-label {
+        color: white;
+        font-weight: 500;
+    }
+    
+    .score-badge {
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 15px;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+    
+    .achievement-badge {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 2rem;
+        border: 2px solid rgba(255, 193, 7, 0.3);
+    }
+    
+    .analysis-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 1.5rem;
+        height: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .analysis-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .analysis-card h5 {
+        color: white;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+    
+    .analysis-card p {
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+    
+    .social-sharing {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 2rem;
+    }
+    
+    .social-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+    }
+    
+    .social-btn:hover {
+        transform: translateY(-3px);
+        color: white;
+    }
+    
+    .social-btn.facebook {
+        background: #1877f2;
+    }
+    
+    .social-btn.twitter {
+        background: #1da1f2;
+    }
+    
+    .social-btn.linkedin {
+        background: #0077b5;
+    }
+    
+    .social-btn.whatsapp {
+        background: #25d366;
+    }
+
+    /* Personalized Report Modal Styles */
+    .chart-container {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 1rem;
+    }
+
+    .analysis-section {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 1rem;
+    }
+
+    .analysis-section h6 {
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .performance-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .performance-item:last-child {
+        border-bottom: none;
+    }
+
+    .performance-label {
+        color: white;
+        font-weight: 500;
+    }
+
+    .performance-score {
+        background: var(--primary-blue);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 15px;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+
+    .recommendation-item {
+        background: rgba(37, 99, 235, 0.1);
+        border-left: 3px solid var(--primary-blue);
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .improvement-item {
+        background: rgba(220, 38, 38, 0.1);
+        border-left: 3px solid #dc2626;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #059669, #10b981) !important;
+        border: none !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3) !important;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(135deg, #047857, #059669) !important;
+        color: #ffffff !important;
+        transform: translateY(-2px) !important;
+    }
+    
+    @media (max-width: 768px) {
+        .score-circle {
+            width: 150px;
+            height: 150px;
+        }
+        
+        .score-number {
+            font-size: 2.5rem;
+        }
+        
+        .score-max {
+            font-size: 1rem;
+        }
+        
+        .achievement-badge {
+            padding: 1.5rem;
+        }
+    }
+</style>
+
+<script>
+    function shareToFacebook() {
+        const text = `I just completed the ITian Club Aptitude Quiz and scored {{ score }}/9! 🎉 Test your skills too!`;
+        const url = window.location.href;
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`, '_blank');
+    }
+    
+    function shareToTwitter() {
+        const text = `I just completed the ITian Club Aptitude Quiz and scored {{ score }}/9! 🎉 Test your skills too!`;
+        const url = window.location.href;
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+    }
+    
+    function shareToLinkedIn() {
+        const text = `I just completed the ITian Club Aptitude Quiz and scored {{ score }}/9! Test your skills too!`;
+        const url = window.location.href;
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+    }
+    
+    function shareToWhatsApp() {
+        const text = `I just completed the ITian Club Aptitude Quiz and scored {{ score }}/9! 🎉 Test your skills too!`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+    
+    // Add confetti animation for high scores
+    {% if score >= 25 %}
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(() => {
+            createConfetti();
+        }, 1000);
+    });
+    
+    function createConfetti() {
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.style.position = 'fixed';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.top = '-10px';
+            confetti.style.width = '10px';
+            confetti.style.height = '10px';
+            confetti.style.backgroundColor = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7'][Math.floor(Math.random() * 5)];
+            confetti.style.borderRadius = '50%';
+            confetti.style.pointerEvents = 'none';
+            confetti.style.zIndex = '9999';
+            confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => {
+                confetti.remove();
+            }, 5000);
+        }
+    }
+    
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+    {% endif %}
+
+    // Personalized Report Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const viewReportBtn = document.getElementById('viewReportBtn');
+        const emailReportBtn = document.getElementById('emailReportBtn');
+        
+        if (viewReportBtn) {
+            viewReportBtn.addEventListener('click', function() {
+                showPersonalizedReport();
+            });
+        }
+
+        if (emailReportBtn) {
+    emailReportBtn.addEventListener('click', function() {
+        // Show loading state
+        this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending Report...';
+        this.disabled = true;
+
+        // Send request via fetch but don't parse JSON
+        fetch('/send_quiz_email', { method: 'POST' })
+            .then(response => {
+                // You can redirect manually if needed
+                if (response.redirected) {
+                    window.location.href = response.url; // follow the redirect
+                } else {
+                    // Just reset button if no redirect
+                    emailReportBtn.innerHTML = 'Send Report';
+                    emailReportBtn.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error sending report:', error);
+                emailReportBtn.innerHTML = 'Send Report';
+                emailReportBtn.disabled = false;
+                alert('Error sending report. Check console.');
+            });
+    });
+}
+    });
+
+    function showPersonalizedReport() {
+        // Get the modal
+        const modal = new bootstrap.Modal(document.getElementById('personalizedReportModal'));
+        
+        // Generate report data
+        generateReportData();
+        
+        // Show the modal
+        modal.show();
+    }
+
+    function generateReportData() {
+        const userScore = {{ score }};
+        const totalQuestions = 30;
+        const percentage = Math.round((userScore / totalQuestions) * 100);
+        
+        // Mock category scores (in real implementation, these would come from the backend)
+        const categoryScores = {{ category_scores | tojson }};
+
+        // Generate charts
+        generateSectionChart(categoryScores);
+        generateOverallChart(userScore, totalQuestions);
+        
+        // Generate analysis
+        generatePerformanceAnalysis(userScore, totalQuestions, percentage);
+        generateRecommendations(userScore, percentage, categoryScores);
+        generateImprovementAreas(userScore, percentage, categoryScores);
+    }
+
+    function generateSectionChart(categoryScores) {
+        const ctx = document.getElementById('sectionChart').getContext('2d');
+        
+        // Simple chart using canvas (in production, use Chart.js)
+        ctx.clearRect(0, 0, 400, 300);
+        ctx.fillStyle = 'white';
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        
+        const categories = Object.keys(categoryScores);
+        const scores = Object.values(categoryScores);
+        const maxScore = Math.max(...scores, 3);
+        
+        const barWidth = 80;
+        const barSpacing = 100;
+        const startX = 50;
+        const startY = 250;
+        
+        categories.forEach((category, index) => {
+            const x = startX + (index * barSpacing);
+            const barHeight = (scores[index] / maxScore) * 200;
+            const y = startY - barHeight;
+            
+            // Draw bar
+            ctx.fillStyle = `hsl(${index * 120}, 70%, 50%)`;
+            ctx.fillRect(x, y, barWidth, barHeight);
+            
+            // Draw label
+            ctx.fillStyle = 'white';
+            ctx.font = '12px Arial';
+            ctx.fillText(category, x + barWidth/2, startY + 20);
+            ctx.fillText(scores[index], x + barWidth/2, y - 10);
+        });
+    }
+
+    function generateOverallChart(score, total) {
+        const ctx = document.getElementById('overallChart').getContext('2d');
+        
+        // Draw a simple pie chart
+        ctx.clearRect(0, 0, 400, 300);
+        
+        const centerX = 200;
+        const centerY = 150;
+        const radius = 80;
+        
+        const percentage = (score / total) * 100;
+        const angle = (percentage / 100) * 2 * Math.PI;
+        
+        // Draw background circle
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.fill();
+        
+        // Draw score arc
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, -Math.PI/2, -Math.PI/2 + angle);
+        ctx.lineTo(centerX, centerY);
+        ctx.fillStyle = '#2563eb';
+        ctx.fill();
+        
+        // Draw text
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(`${score}/${total}`, centerX, centerY);
+        ctx.font = '16px Arial';
+        ctx.fillText(`${Math.round(percentage)}%`, centerX, centerY + 25);
+    }
+
+    function generatePerformanceAnalysis(score, total, percentage) {
+        const container = document.getElementById('performanceAnalysis');
+        
+        let analysis = '';
+        
+        if (percentage >= 80) {
+            analysis = `
+                <div class="performance-item">
+                    <span class="performance-label">Overall Performance</span>
+                    <span class="performance-score">Excellent</span>
+                </div>
+                <p>Outstanding performance! You've demonstrated strong aptitude skills across all categories.</p>
+            `;
+        } else if (percentage >= 60) {
+            analysis = `
+                <div class="performance-item">
+                    <span class="performance-label">Overall Performance</span>
+                    <span class="performance-score">Good</span>
+                </div>
+                <p>Good performance with room for improvement. Focus on weaker areas to enhance your skills.</p>
+            `;
+        } else if (percentage >= 40) {
+            analysis = `
+                <div class="performance-item">
+                    <span class="performance-label">Overall Performance</span>
+                    <span class="performance-score">Average</span>
+                </div>
+                <p>Average performance. Regular practice will help improve your scores significantly.</p>
+            `;
+        } else {
+            analysis = `
+                <div class="performance-item">
+                    <span class="performance-label">Overall Performance</span>
+                    <span class="performance-score">Needs Improvement</span>
+                </div>
+                <p>Focus on strengthening foundational skills through targeted practice.</p>
+            `;
+        }
+        
+        container.innerHTML = analysis;
+    }
+
+    function generateRecommendations(score, percentage, categoryScores) {
+        const container = document.getElementById('recommendations');
+        
+        let recommendations = '';
+        
+        if (percentage >= 80) {
+            recommendations = `
+                <div class="recommendation-item">
+                    <strong>Advanced Practice:</strong> Consider competitive aptitude tests and advanced problem-solving.
+                </div>
+                <div class="recommendation-item">
+                    <strong>Time Management:</strong> Focus on speed while maintaining accuracy.
+                </div>
+            `;
+        } else if (percentage >= 60) {
+            recommendations = `
+                <div class="recommendation-item">
+                    <strong>Targeted Practice:</strong> Focus on areas where you scored lower.
+                </div>
+                <div class="recommendation-item">
+                    <strong>Mock Tests:</strong> Take regular practice tests to improve speed.
+                </div>
+            `;
+        } else {
+            recommendations = `
+                <div class="recommendation-item">
+                    <strong>Foundation Building:</strong> Start with basic concepts and gradually progress.
+                </div>
+                <div class="recommendation-item">
+                    <strong>Regular Practice:</strong> Dedicate daily time to aptitude practice.
+                </div>
+            `;
+        }
+        
+        container.innerHTML = recommendations;
+    }
+
+    function generateImprovementAreas(score, percentage, categoryScores) {
+        const container = document.getElementById('improvementAreas');
+        
+        let improvements = '';
+        
+        // Find the category with lowest score
+        const minScore = Math.min(...Object.values(categoryScores));
+        const weakCategories = Object.keys(categoryScores).filter(cat => categoryScores[cat] === minScore);
+        
+        weakCategories.forEach(category => {
+            improvements += `
+                <div class="improvement-item">
+                    <strong>${category}:</strong> Focus on ${category.toLowerCase()} practice problems and concepts.
+                </div>
+            `;
+        });
+        
+        if (percentage < 60) {
+            improvements += `
+                <div class="improvement-item">
+                    <strong>General:</strong> Increase practice frequency and focus on time management.
+                </div>
+            `;
+        }
+        
+        container.innerHTML = improvements || '<p>Great job! Keep up the good work.</p>';
+    }
+
+
+</script>
+{% endblock %}
