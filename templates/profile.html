@@ -65,9 +65,9 @@
                     </div>
                 </div>
 
-                <div class="alert alert-info" role="alert">
-                    <i class="fas fa-info-circle me-2"></i>
-                    <strong>Note:</strong> At least one of URN or CRN is required to proceed.
+                <input type="hidden" id="urn-crn-hidden" required>
+                <div id="urn-crn-alert" class="invalid-feedback">
+                    Please provide either URN or CRN to continue.
                 </div>
 
                 <div class="row">
@@ -285,11 +285,12 @@
                     // Check if at least one of URN or CRN is provided
                     var urn = document.getElementById('urn').value.trim();
                     var crn = document.getElementById('crn').value.trim();
-                    
+                    var hidden = document.getElementById('urn-crn-hidden');
+
                     if (!urn && !crn) {
-                        event.preventDefault();
-                        alert('Please provide either URN or CRN to continue.');
-                        return false;
+                        hidden.setCustomValidity('invalid'); // mark as invalid
+                    } else {
+                        hidden.setCustomValidity(''); // mark as valid
                     }
                     
                     form.classList.add('was-validated');
