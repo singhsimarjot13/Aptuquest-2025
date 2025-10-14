@@ -134,7 +134,15 @@ def get_participant():
 @app.before_request
 def make_session_permanent():
     session.permanent = True
+@app.before_request
+def restrict_mobile_devices():
+    restricted_routes = ['/quiz', '/instructions', '/profile']  # yahan un pages ke route path likho
+    user_agent = request.user_agent.string.lower()
 
+    # Check only for restricted pages
+    if any(request.path.startswith(r) for r in restricted_routes):
+        if 'mobile' in user_agent or 'iphone' in user_agent or 'android' in user_agent or 'ipad' in user_agent:
+            return redirect(url_for('device_restricted'))
 # Routes
 @app.route("/")
 def index():
