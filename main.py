@@ -6,7 +6,7 @@ import random
 import logging
 from datetime import datetime, timedelta
 from flask_mail import Message, Mail
-from apscheduler.schedulers.background import BackgroundScheduler
+from threading import Thread
 import os
 from datetime import timedelta
 from dotenv import load_dotenv
@@ -609,6 +609,11 @@ def device_restricted():
     """Device restriction page for mobile/tablet users"""
     return render_template('404.html', device_restricted=True)
 
+# Async email sending
+def send_email_async(app, participant_email, questions, answers, score):
+    with app.app_context():
+        send_email_later(participant_email, questions, answers, score)
+        
 @app.route("/send_quiz_email", methods=["POST"])
 @require_auth
 def send_quiz_email():
@@ -630,13 +635,7 @@ def send_quiz_email():
         # Schedule email to be sent later
         print("sending email immediately")
         # Call the email function directly
-        send_email_later(
-            participant.email,
-            quiz_questions,
-            participant.answers,
-            participant.score
-        )
-
+        Thread(target=send_email_async, args=(app, participant.email, participant.questions, participant.answers, participant.score)).start()
         flash("Your detailed quiz results have been emailed to you!", "success")
         return redirect(url_for("thank_you"))
 
@@ -651,81 +650,80 @@ def send_email_later(participant_email, questions, answers, score):
         print("sending email")
         print(participant_email)
         print(app.config['MAIL_DEFAULT_SENDER'])
-        with app.app_context(): 
-            msg = Message(
-                "Your Aptitude Quiz Results - ITian Club",
-                sender=app.config['MAIL_DEFAULT_SENDER'],
-                recipients=[participant_email]
-            )
+        msg = Message(
+            "Your Aptitude Quiz Results - ITian Club",
+            sender=app.config['MAIL_DEFAULT_SENDER'],
+            recipients=[participant_email]
+        )
 
-            # Build detailed HTML content
-            html_body = f"""
-            <html>
-            <body style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto;">
-                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; color: white; text-align: center;">
-                    <h1>ITian Club Aptitude Quiz Results</h1>
-                </div>
-                <div style="padding: 20px;">
-                    <h2>Congratulations!</h2>
-                    <p>Thank you for participating in the ITian Club Aptitude Quiz.</p>
-                    
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                        <h3>Your Score: {score}/{len(questions)}</h3>
-                        <p>Percentage: {(score/len(questions))*100:.1f}%</p>
-                    </div>
-
-                    <h3>Detailed Question Analysis:</h3>
-            """
-
-            current_category = None
-            for q in questions:
-                user_ans = answers.get(str(q['id']), [])
-                correct_ans = q['answer']
+        # Build detailed HTML content
+        html_body = f"""
+        <html>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto;">
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; color: white; text-align: center;">
+                <h1>ITian Club Aptitude Quiz Results</h1>
+            </div>
+            <div style="padding: 20px;">
+                <h2>Congratulations!</h2>
+                <p>Thank you for participating in the ITian Club Aptitude Quiz.</p>
                 
-                # Add category header only once
-                if q['category'] != current_category:
-                    html_body += f"<h4 style='color: #667eea; margin-top: 20px;'>{q['category']} Questions</h4>"
-                    current_category = q['category']
-
-                # Determine if answer was correct
-                is_correct = False
-                if q.get("multiple"):
-                    is_correct = set(user_ans) == set(correct_ans)
-                else:
-                    is_correct = user_ans and user_ans[0] == correct_ans
-
-                status_color = "#28a745" if is_correct else "#dc3545"
-                status_text = "✓ Correct" if is_correct else "✗ Incorrect"
-
-                html_body += f"""
-                    <div style="background: white; border-left: 4px solid {status_color}; padding: 15px; margin: 10px 0; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        <p><strong>Q{q['id']}: {q['question']}</strong></p>
-                        <p style="margin: 5px 0;"><strong>Your Answer:</strong> {', '.join(user_ans) if user_ans else 'No answer'}</p>
-                        <p style="margin: 5px 0;"><strong>Correct Answer:</strong> {correct_ans}</p>
-                        <p style="margin: 5px 0; color: {status_color};"><strong>Status:</strong> {status_text}</p>
-                    </div>
-                """
-
-            html_body += """
-                    <hr style="margin: 30px 0;">
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                        <h4>Performance Summary:</h4>
-                        <p>• Review your answers to understand where you can improve</p>
-                        <p>• Focus on the categories where you scored lower</p>
-                        <p>• Practice similar questions to enhance your skills</p>
-                    </div>
-                    
-                    <hr style="margin: 30px 0;">
-                    <p><em>Thank you for your participation!</em></p>
-                    <p><strong>– ITian Club Team</strong></p>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                    <h3>Your Score: {score}/{len(questions)}</h3>
+                    <p>Percentage: {(score/len(questions))*100:.1f}%</p>
                 </div>
-            </body>
-            </html>
+
+                <h3>Detailed Question Analysis:</h3>
+        """
+
+        current_category = None
+        for q in questions:
+            user_ans = answers.get(str(q['id']), [])
+            correct_ans = q['answer']
+            
+            # Add category header only once
+            if q['category'] != current_category:
+                html_body += f"<h4 style='color: #667eea; margin-top: 20px;'>{q['category']} Questions</h4>"
+                current_category = q['category']
+
+            # Determine if answer was correct
+            is_correct = False
+            if q.get("multiple"):
+                is_correct = set(user_ans) == set(correct_ans)
+            else:
+                is_correct = user_ans and user_ans[0] == correct_ans
+
+            status_color = "#28a745" if is_correct else "#dc3545"
+            status_text = "✓ Correct" if is_correct else "✗ Incorrect"
+
+            html_body += f"""
+                <div style="background: white; border-left: 4px solid {status_color}; padding: 15px; margin: 10px 0; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <p><strong>Q{q['id']}: {q['question']}</strong></p>
+                    <p style="margin: 5px 0;"><strong>Your Answer:</strong> {', '.join(user_ans) if user_ans else 'No answer'}</p>
+                    <p style="margin: 5px 0;"><strong>Correct Answer:</strong> {correct_ans}</p>
+                    <p style="margin: 5px 0; color: {status_color};"><strong>Status:</strong> {status_text}</p>
+                </div>
             """
 
-            msg.html = html_body
-            mail.send(msg)
-            logger.info(f"Detailed email sent successfully to {participant_email}")
+        html_body += """
+                <hr style="margin: 30px 0;">
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                    <h4>Performance Summary:</h4>
+                    <p>• Review your answers to understand where you can improve</p>
+                    <p>• Focus on the categories where you scored lower</p>
+                    <p>• Practice similar questions to enhance your skills</p>
+                </div>
+                
+                <hr style="margin: 30px 0;">
+                <p><em>Thank you for your participation!</em></p>
+                <p><strong>– ITian Club Team</strong></p>
+            </div>
+        </body>
+        </html>
+        """
+
+        msg.html = html_body
+        mail.send(msg)
+        logger.info(f"Detailed email sent successfully to {participant_email}")
 
     except Exception as e:
         logger.error(f"Email sending error: {str(e)}")
