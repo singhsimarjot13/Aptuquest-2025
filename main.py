@@ -474,7 +474,7 @@ def quiz():
             
             return redirect(url_for("thank_you"))
 
-        return render_template("quiz.html", questions=quiz_questions, timer=70)
+        return render_template("quiz.html", questions=quiz_questions, timer=1200)
 
     except Exception as e:
         logger.error(f"Quiz error: {str(e)}")
@@ -594,7 +594,7 @@ def admin_reject(pid):
     p = Participant.query.get(pid)
     if not p:
         return jsonify({'success': False, 'error': 'Not found'}), 404
-    p.approval_status = 'rejected'
+    p.approval_status = 'pending'
     db.session.commit()
     return jsonify({'success': True})
 
@@ -637,12 +637,12 @@ def send_quiz_email():
         )
         print("email scheduled")
         flash("Your detailed quiz results will be emailed to you within 1 hour!", "success")
-        return redirect(url_for("thank_you"))
+        return render_template("thank_you.html")
 
     except Exception as e:
         logger.error(f"Email scheduling error: {str(e)}")
         flash("Failed to schedule email. Please try again.", "danger")
-        return redirect(url_for("thank_you"))
+        return render_template("thank_you.html")
 
 def send_email_later(participant_email, questions, answers, score):
     """Send quiz results email with detailed question analysis"""
