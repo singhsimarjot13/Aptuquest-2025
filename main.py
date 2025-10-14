@@ -90,8 +90,7 @@ with app.app_context():
         logger.warning(f"Migration check failed: {e}")
 
 # Background scheduler for email tasks
-scheduler = BackgroundScheduler()
-scheduler.start()
+
 
 # Helper Functions
 def is_authenticated():
