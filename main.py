@@ -42,7 +42,6 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)  # 5 min inactiv
 Session(app)
 db = SQLAlchemy(app)
 mail = Mail(app)
-
 # Google OAuth Configuration
 google_bp = make_google_blueprint(
     client_id=os.getenv('GOOGLE_CLIENT_ID'),
@@ -197,6 +196,8 @@ def logout():
     try:
         # Clear session
         session.clear()
+        if "google_oauth_token" in session:
+           del session["google_oauth_token"]
         flash("You have been successfully logged out.", "success")
         return redirect(url_for("index"))
     except Exception as e:
@@ -562,7 +563,7 @@ def pending_page():
 @require_auth
 @require_admin
 def admin_pending():
-    pending_users = Participant.query.filter_by(approval_status='pending').all()
+    pending_users = Participant.query.filter(Participant.approval_status == 'pending',Participant.branch.isnot(None)).all()
     data = [{
         'id': p.id,
         'name': p.name,
@@ -594,6 +595,10 @@ def admin_reject(pid):
     if not p:
         return jsonify({'success': False, 'error': 'Not found'}), 404
     p.approval_status = 'pending'
+    p.crn=None
+    p.urn=None
+    p.branch=''
+    p.year=None
     db.session.commit()
     return jsonify({'success': True})
 

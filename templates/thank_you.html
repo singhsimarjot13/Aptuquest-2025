@@ -47,7 +47,7 @@
                             <i class="fas fa-calculator me-2"></i>Mathematics
                         </div>
                         <div class="performance-score">
-                            <span class="score-badge">{{ score if score <= 15 else 15 }}</span>
+                            <span class="score-badge">{{ category_scores.Math }}</span>
                         </div>
                     </div>
                     <div class="performance-item">
@@ -55,7 +55,7 @@
                             <i class="fas fa-brain me-2"></i>Reasoning
                         </div>
                         <div class="performance-score">
-                            <span class="score-badge">{{ score if score <= 15 else 15 }}</span>
+                            <span class="score-badge">{{  category_scores.Reasoning }}</span>
                         </div>
                     </div>
                     <div class="performance-item">
@@ -63,7 +63,7 @@
                             <i class="fas fa-language me-2"></i>Verbal
                         </div>
                         <div class="performance-score">
-                            <span class="score-badge">{{ score if score <= 15 else 15 }}</span>
+                            <span class="score-badge">{{  category_scores.Verbal }}</span>
                         </div>
                     </div>
                 </div>
