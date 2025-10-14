@@ -628,21 +628,22 @@ def send_quiz_email():
             return redirect(url_for("thank_you"))
         print("scheduling email")
         # Schedule email to be sent later
-        scheduler.add_job(
-            send_email_later,
-            'date',
-            run_date=datetime.now() + timedelta(seconds=10),
-            args=[participant.email, quiz_questions, participant.answers, participant.score],
-            id=f"email_{participant.id}_{datetime.now().timestamp()}"
+        print("sending email immediately")
+        # Call the email function directly
+        send_email_later(
+            participant.email,
+            quiz_questions,
+            participant.answers,
+            participant.score
         )
-        print("email scheduled")
-        flash("Your detailed quiz results will be emailed to you within 1 hour!", "success")
-        return render_template("thank_you.html")
+
+        flash("Your detailed quiz results have been emailed to you!", "success")
+        return redirect(url_for("thank_you"))
 
     except Exception as e:
         logger.error(f"Email scheduling error: {str(e)}")
         flash("Failed to schedule email. Please try again.", "danger")
-        return render_template("thank_you.html")
+        return redirect(url_for("thank_you"))
 
 def send_email_later(participant_email, questions, answers, score):
     """Send quiz results email with detailed question analysis"""
