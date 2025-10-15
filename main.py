@@ -155,6 +155,8 @@ def google_login():
     try:
         if not google.authorized:
             return redirect(url_for("google.login"))
+        else:
+            flash("You are already authenticated")
 
         resp = google.get("/oauth2/v2/userinfo")
         if not resp.ok:
