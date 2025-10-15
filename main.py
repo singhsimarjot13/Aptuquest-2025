@@ -98,7 +98,7 @@ def is_authenticated():
 
 def is_admin():
     """Check if current user is admin"""
-    admin_emails = ["thoughtz175@gmail.com"]  # Add more admin emails as needed
+    admin_emails = ["thoughtz175@gmail.com","itian.club.gndec@gmail.com"]  # Add more admin emails as needed
     return session.get("user_email") in admin_emails
 
 def require_auth(f):
@@ -157,6 +157,7 @@ def google_login():
             return redirect(url_for("google.login"))
         else:
             flash("You are already authenticated")
+            return redirect(url_for("index.html"))
 
         resp = google.get("/oauth2/v2/userinfo")
         if not resp.ok:
@@ -476,7 +477,7 @@ def quiz():
             
             return redirect(url_for("thank_you"))
 
-        return render_template("quiz.html", questions=quiz_questions, timer=1200)
+        return render_template("quiz.html", questions=quiz_questions, timer=2400)
 
     except Exception as e:
         logger.error(f"Quiz error: {str(e)}")
