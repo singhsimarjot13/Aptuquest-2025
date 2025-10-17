@@ -10,7 +10,7 @@ from threading import Thread
 import os
 from datetime import timedelta
 from dotenv import load_dotenv
-
+from mailjet_rest import Client
 # Load environment variables from .env
 load_dotenv()
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = os.getenv('OAUTHLIB_INSECURE_TRANSPORT', '0')
@@ -651,11 +651,10 @@ def send_email_later(participant_email, questions, answers, score):
         print("sending email")
         print(participant_email)
         print(app.config['MAIL_DEFAULT_SENDER'])
-        msg = Message(
-            "Your Aptitude Quiz Results - ITian Club",
-            sender=app.config['MAIL_DEFAULT_SENDER'],
-            recipients=[participant_email]
-        )
+        api_key = os.environ.get('MAILJET_API_KEY_PUBLIC')
+        api_secret = os.environ.get('MAILJET_API_KEY_PRIVATE')
+
+        mailjet = Client(auth=(api_key, api_secret), version='v3.1')
 
         # Build detailed HTML content
         html_body = f"""
@@ -722,9 +721,26 @@ def send_email_later(participant_email, questions, answers, score):
         </html>
         """
 
-        msg.html = html_body
-        mail.send(msg)
-        logger.info(f"Detailed email sent successfully to {participant_email}")
+        data = {
+        'Messages': [
+            {
+                "From": {
+                    "Email": "itian.club.gndec@gmail.com",
+                    "Name": "ITian Club"
+                },
+                "To": [
+                    {
+                        "Email": participant_email,
+                        "Name": "Participant"
+                    }
+                ],
+                "Subject": "Your Aptitude Quiz Results - ITian Club",
+                "HTMLPart": html_body
+            }
+        ]
+    }
+        result = mailjet.send.create(data=data)
+        print(f"Email sent to {participant_email}, status: {result.status_code}")
 
     except Exception as e:
         logger.error(f"Email sending error: {str(e)}")
