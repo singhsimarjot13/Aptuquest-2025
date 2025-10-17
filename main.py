@@ -725,7 +725,7 @@ def send_email_later(participant_email, questions, answers, score):
         'Messages': [
             {
                 "From": {
-                    "Email": "itian.club.gndec@gmail.com",
+                    "Email": "thoughtz175@gmail.com",
                     "Name": "ITian Club"
                 },
                 "To": [
