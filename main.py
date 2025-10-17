@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env
 load_dotenv()
-
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = os.getenv('OAUTHLIB_INSECURE_TRANSPORT')
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -613,9 +613,7 @@ def device_restricted():
     return render_template('404.html', device_restricted=True)
 
 # Async email sending
-def send_email_async(app, participant_email, questions, answers, score):
-    with app.app_context():
-        send_email_later(participant_email, questions, answers, score)
+
         
 @app.route("/send_quiz_email", methods=["POST"])
 @require_auth
@@ -638,7 +636,7 @@ def send_quiz_email():
         # Schedule email to be sent later
         print("sending email immediately")
         # Call the email function directly
-        Thread(target=send_email_async, args=(app, participant.email, participant.questions, participant.answers, participant.score)).start()
+        send_email_later(participant.email, participant.questions, participant.answers, participant.score)
         flash("Your detailed quiz results have been emailed to you!", "success")
         return redirect(url_for("thank_you"))
 
