@@ -36,7 +36,7 @@ app.config.update(
 
 
 app.config['SESSION_PERMANENT'] = True             # Make sessions permanent
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)  # 5 min inactivity
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=60)  # 5 min inactivity
 
 # Initialize extensions
 Session(app)
@@ -374,8 +374,7 @@ def quiz():
                  "options": ["C", "D", "E", "F"], "answer": "C"},
                 {"id": 17, "question": "Find the next number: 3, 7, 15, 31, ?", "options": ["47", "63", "57", "49"],
                  "answer": "63"},
-                {"id": 18, "question": "A code language: 'ALPHA' = 'ZOKSZ'. What is 'BETA' coded as?",
-                 "options": ["YVUZ", "YVUZ", "YVUZ", "YVUZ"], "answer": "YVUZ"},
+                 {"id": 18, "question": "A code language: 'ALPHA' = 'ZOKSZ'. What is 'BETA' coded as?",  "options": ["YVGZ", "YVUZ", "YVYY", "YVXZ"], "answer": "YVGZ"},
                 {"id": 19,
                  "question": "Three boxes: GG, SS, GS. You pick a box and draw one gold coin. What is the probability that the box is GG?",
                  "options": ["1/2", "2/3", "1/3", "3/4"], "answer": "2/3"},
